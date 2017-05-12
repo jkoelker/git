@@ -592,6 +592,14 @@ static void mark_recent_complete_commits(struct fetch_pack_args *args,
 	}
 }
 
+static int is_literal_sha1(const struct ref *ref)
+{
+	struct object_id oid;
+	return !get_oid_hex(ref->name, &oid) &&
+	       !ref->name[40] &&
+	       !oidcmp(&oid, &ref->old_oid);
+}
+
 static void filter_refs(struct fetch_pack_args *args,
 			struct ref **refs,
 			struct ref **sought, int nr_sought)
@@ -601,7 +609,6 @@ static void filter_refs(struct fetch_pack_args *args,
 	struct ref *ref, *next;
 	int i;
 
-	i = 0;
 	for (ref = *refs; ref; ref = next) {
 		int keep = 0;
 		next = ref->next;
@@ -610,15 +617,14 @@ static void filter_refs(struct fetch_pack_args *args,
 		    check_refname_format(ref->name, 0))
 			; /* trash */
 		else {
-			while (i < nr_sought) {
-				int cmp = strcmp(ref->name, sought[i]->name);
-				if (cmp < 0)
-					break; /* definitely do not have it */
-				else if (cmp == 0) {
-					keep = 1; /* definitely have it */
-					sought[i]->match_status = REF_MATCHED;
+			for (i = 0; i < nr_sought; i++) {
+				struct ref *s = sought[i];
+				if (!strcmp(ref->name, s->name) ||
+				    (is_literal_sha1(s) &&
+				     !oidcmp(&ref->old_oid, &s->old_oid))) {
+					keep = 1;
+					s->match_status = REF_MATCHED;
 				}
-				i++;
 			}
 		}
 
@@ -637,15 +643,10 @@ static void filter_refs(struct fetch_pack_args *args,
 
 	/* Append unmatched requests to the list */
 	for (i = 0; i < nr_sought; i++) {
-		struct object_id oid;
-		const char *p;
-
 		ref = sought[i];
 		if (ref->match_status != REF_NOT_MATCHED)
 			continue;
-		if (parse_oid_hex(ref->name, &oid, &p) ||
-		    *p != '\0' ||
-		    oidcmp(&oid, &ref->old_oid))
+		if (!is_literal_sha1(ref))
 			continue;
 
 		if ((allow_unadvertised_object_request &

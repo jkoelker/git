@@ -547,6 +547,12 @@ test_expect_success 'fetch-pack can fetch a raw sha1' '
 	git fetch-pack hidden $(git -C hidden rev-parse refs/hidden/one)
 '
 
+test_expect_success 'fetch-pack can fetch a raw sha1 that is advertised as a ref' '
+	git init server &&
+	test_commit -C server 4 &&
+	git fetch-pack server $(git -C server rev-parse refs/heads/master)
+'
+
 check_prot_path () {
 	cat >expected <<-EOF &&
 	Diag: url=$1
