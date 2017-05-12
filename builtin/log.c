@@ -26,6 +26,7 @@
 #include "version.h"
 #include "mailmap.h"
 #include "gpg-interface.h"
+#include "graph.h"
 
 /* Set a default date-time format for git log ("log.date" config variable) */
 static const char *default_date_mode = NULL;
@@ -34,6 +35,7 @@ static int default_abbrev_commit;
 static int default_show_root = 1;
 static int default_follow;
 static int default_show_signature;
+static int default_show_graph = 0;
 static int decoration_style;
 static int decoration_given;
 static int use_mailmap_config;
@@ -124,6 +126,11 @@ static void cmd_log_init_defaults(struct rev_info *rev)
 	rev->diffopt.stat_graph_width = -1; /* respect statGraphWidth config */
 	rev->abbrev_commit = default_abbrev_commit;
 	rev->show_root_diff = default_show_root;
+	if (default_show_graph) {
+		rev->topo_order = 1;
+		rev->rewrite_parents = 1;
+		rev->graph = graph_init(rev);
+	}
 	rev->subject_prefix = fmt_patch_subject_prefix;
 	rev->show_signature = default_show_signature;
 	DIFF_OPT_SET(&rev->diffopt, ALLOW_TEXTCONV);
@@ -415,6 +422,10 @@ static int git_log_config(const char *var, const char *value, void *cb)
 	}
 	if (!strcmp(var, "log.showroot")) {
 		default_show_root = git_config_bool(var, value);
+		return 0;
+	}
+	if (!strcmp(var, "log.graph")) {
+		default_show_graph = git_config_bool(var, value);
 		return 0;
 	}
 	if (!strcmp(var, "log.follow")) {

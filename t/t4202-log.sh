@@ -173,6 +173,13 @@ test_expect_success 'git config log.follow is overridden by --no-follow' '
 	verbose test "$actual" = "$expect"
 '
 
+test_expect_success 'git config log.graph works like --graph' '
+	expect=$(git log --graph) &&
+	test_config log.graph true &&
+	actual=$(git log) &&
+	verbose test "$actual" = "$expect"
+'
+
 cat > expect << EOF
 804a787 sixth
 394ef78 fifth
