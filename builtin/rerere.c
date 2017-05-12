@@ -75,7 +75,7 @@ int cmd_rerere(int argc, const char **argv, const char *prefix)
 		struct pathspec pathspec;
 		if (argc < 2)
 			warning("'git rerere forget' without paths is deprecated");
-		parse_pathspec(&pathspec, 0, PATHSPEC_PREFER_CWD,
+		parse_pathspec(&pathspec, NULL, 0, PATHSPEC_PREFER_CWD,
 			       prefix, argv + 1);
 		return rerere_forget(&pathspec);
 	}

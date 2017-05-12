@@ -714,7 +714,7 @@ static int do_reupdate(int ac, const char **av,
 	int has_head = 1;
 	struct pathspec pathspec;
 
-	parse_pathspec(&pathspec, 0,
+	parse_pathspec(&pathspec, NULL, 0,
 		       PATHSPEC_PREFER_CWD,
 		       prefix, av + 1);
 

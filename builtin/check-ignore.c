@@ -84,10 +84,11 @@ static int check_ignore(struct dir_struct *dir,
 	 * check-ignore just needs paths. Magic beyond :/ is really
 	 * irrelevant.
 	 */
-	parse_pathspec(&pathspec,
+	parse_pathspec(&pathspec, &the_index,
 		       PATHSPEC_ALL_MAGIC & ~PATHSPEC_FROMTOP,
 		       PATHSPEC_SYMLINK_LEADING_PATH |
-		       PATHSPEC_STRIP_SUBMODULE_SLASH_EXPENSIVE |
+		       PATHSPEC_SUBMODULE_LEADING_PATH |
+		       PATHSPEC_STRIP_SUBMODULE_SLASH |
 		       PATHSPEC_KEEP_ORDER,
 		       prefix, argv);
 
@@ -96,7 +97,7 @@ static int check_ignore(struct dir_struct *dir,
 	 * should not be ignored, in order to be consistent with
 	 * 'git status', 'git add' etc.
 	 */
-	seen = find_pathspecs_matching_against_index(&pathspec);
+	seen = find_pathspecs_matching_against_index(&pathspec, &the_index);
 	for (i = 0; i < pathspec.nr; i++) {
 		full_path = pathspec.items[i].match;
 		exclude = NULL;

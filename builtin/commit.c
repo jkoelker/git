@@ -342,7 +342,7 @@ static const char *prepare_index(int argc, const char **argv, const char *prefix
 
 	if (is_status)
 		refresh_flags |= REFRESH_UNMERGED;
-	parse_pathspec(&pathspec, 0,
+	parse_pathspec(&pathspec, NULL, 0,
 		       PATHSPEC_PREFER_FULL,
 		       prefix, argv);
 
@@ -1389,7 +1389,7 @@ int cmd_status(int argc, const char **argv, const char *prefix)
 	handle_untracked_files_arg(&s);
 	if (show_ignored_in_status)
 		s.show_ignored_files = 1;
-	parse_pathspec(&s.pathspec, 0,
+	parse_pathspec(&s.pathspec, NULL, 0,
 		       PATHSPEC_PREFER_FULL,
 		       prefix, argv);
 

@@ -1484,7 +1484,8 @@ static void prepare_show_merge(struct rev_info *revs)
 			i++;
 	}
 	clear_pathspec(&revs->prune_data);
-	parse_pathspec(&revs->prune_data, PATHSPEC_ALL_MAGIC & ~PATHSPEC_LITERAL,
+	parse_pathspec(&revs->prune_data, NULL,
+		       PATHSPEC_ALL_MAGIC & ~PATHSPEC_LITERAL,
 		       PATHSPEC_PREFER_FULL | PATHSPEC_LITERAL_PATH, "", prune);
 	revs->limited = 1;
 }
@@ -2363,7 +2364,7 @@ int setup_revisions(int argc, const char **argv, struct rev_info *revs, struct s
 		 */
 		ALLOC_GROW(prune_data.path, prune_data.nr + 1, prune_data.alloc);
 		prune_data.path[prune_data.nr++] = NULL;
-		parse_pathspec(&revs->prune_data, 0, 0,
+		parse_pathspec(&revs->prune_data, NULL, 0, 0,
 			       revs->prefix, prune_data.path);
 	}
 

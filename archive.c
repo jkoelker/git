@@ -306,7 +306,7 @@ static int path_exists(struct tree *tree, const char *path)
 	struct pathspec pathspec;
 	int ret;
 
-	parse_pathspec(&pathspec, 0, 0, "", paths);
+	parse_pathspec(&pathspec, NULL, 0, 0, "", paths);
 	pathspec.recursive = 1;
 	ret = read_tree_recursive(tree, "", 0, 0, &pathspec,
 				  reject_entry, &pathspec);
@@ -322,7 +322,7 @@ static void parse_pathspec_arg(const char **pathspec,
 	 * Also if pathspec patterns are dependent, we're in big
 	 * trouble as we test each one separately
 	 */
-	parse_pathspec(&ar_args->pathspec, 0,
+	parse_pathspec(&ar_args->pathspec, NULL, 0,
 		       PATHSPEC_PREFER_FULL,
 		       "", pathspec);
 	ar_args->pathspec.recursive = 1;

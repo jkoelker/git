@@ -436,7 +436,7 @@ void overlay_tree_on_cache(const char *tree_name, const char *prefix)
 	if (prefix) {
 		static const char *(matchbuf[1]);
 		matchbuf[0] = NULL;
-		parse_pathspec(&pathspec, PATHSPEC_ALL_MAGIC,
+		parse_pathspec(&pathspec, NULL, PATHSPEC_ALL_MAGIC,
 			       PATHSPEC_PREFER_CWD, prefix, matchbuf);
 	} else
 		memset(&pathspec, 0, sizeof(pathspec));
@@ -623,9 +623,9 @@ int cmd_ls_files(int argc, const char **argv, const char *cmd_prefix)
 		die("ls-files --recurse-submodules does not support "
 		    "--error-unmatch");
 
-	parse_pathspec(&pathspec, 0,
+	parse_pathspec(&pathspec, &the_index, 0,
 		       PATHSPEC_PREFER_CWD |
-		       PATHSPEC_STRIP_SUBMODULE_SLASH_CHEAP,
+		       PATHSPEC_STRIP_SUBMODULE_SLASH,
 		       prefix, argv);
 
 	/*

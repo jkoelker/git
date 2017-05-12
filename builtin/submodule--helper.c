@@ -232,9 +232,9 @@ static int module_list_compute(int argc, const char **argv,
 {
 	int i, result = 0;
 	char *ps_matched = NULL;
-	parse_pathspec(pathspec, 0,
+	parse_pathspec(pathspec, &the_index, 0,
 		       PATHSPEC_PREFER_FULL |
-		       PATHSPEC_STRIP_SUBMODULE_SLASH_CHEAP,
+		       PATHSPEC_STRIP_SUBMODULE_SLASH,
 		       prefix, argv);
 
 	if (pathspec->nr)

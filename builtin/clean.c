@@ -926,7 +926,7 @@ int cmd_clean(int argc, const char **argv, const char *prefix)
 	for (i = 0; i < exclude_list.nr; i++)
 		add_exclude(exclude_list.items[i].string, "", 0, el, -(i+1));
 
-	parse_pathspec(&pathspec, 0,
+	parse_pathspec(&pathspec, NULL, 0,
 		       PATHSPEC_PREFER_CWD,
 		       prefix, argv);
 

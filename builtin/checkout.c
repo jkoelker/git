@@ -1285,7 +1285,7 @@ int cmd_checkout(int argc, const char **argv, const char *prefix)
 	}
 
 	if (argc) {
-		parse_pathspec(&opts.pathspec, 0,
+		parse_pathspec(&opts.pathspec, NULL, 0,
 			       opts.patch_mode ? PATHSPEC_PREFIX_ORIGIN : 0,
 			       prefix, argv);
 

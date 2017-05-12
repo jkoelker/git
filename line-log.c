@@ -754,7 +754,7 @@ void line_log_init(struct rev_info *rev, const char *prefix, struct string_list 
 			argv_array_push(&array, r->path);
 		paths = argv_array_detach(&array);
 
-		parse_pathspec(&rev->diffopt.pathspec, 0,
+		parse_pathspec(&rev->diffopt.pathspec, NULL, 0,
 			       PATHSPEC_PREFER_FULL, "", paths);
 		/* strings are now owned by pathspec */
 		free(paths);

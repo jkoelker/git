@@ -1218,7 +1218,7 @@ int cmd_grep(int argc, const char **argv, const char *prefix)
 			verify_filename(prefix, argv[j], j == i && allow_revs);
 	}
 
-	parse_pathspec(&pathspec, 0,
+	parse_pathspec(&pathspec, NULL, 0,
 		       PATHSPEC_PREFER_CWD |
 		       (opt.max_depth != -1 ? PATHSPEC_MAXDEPTH_VALID : 0),
 		       prefix, argv + i);

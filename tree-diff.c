@@ -641,7 +641,7 @@ static void try_to_follow_renames(const unsigned char *old, const unsigned char 
 			path[0] = p->one->path;
 			path[1] = NULL;
 			clear_pathspec(&opt->pathspec);
-			parse_pathspec(&opt->pathspec,
+			parse_pathspec(&opt->pathspec, NULL,
 				       PATHSPEC_ALL_MAGIC & ~PATHSPEC_LITERAL,
 				       PATHSPEC_LITERAL_PATH, "", path);
 

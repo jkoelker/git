@@ -557,7 +557,7 @@ static struct origin *find_origin(struct scoreboard *sb,
 	paths[0] = origin->path;
 	paths[1] = NULL;
 
-	parse_pathspec(&diff_opts.pathspec,
+	parse_pathspec(&diff_opts.pathspec, NULL,
 		       PATHSPEC_ALL_MAGIC & ~PATHSPEC_LITERAL,
 		       PATHSPEC_LITERAL_PATH, "", paths);
 	diff_setup_done(&diff_opts);
